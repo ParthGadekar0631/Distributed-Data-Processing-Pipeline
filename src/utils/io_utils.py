@@ -12,8 +12,9 @@ CONFIG_PATH = PROJECT_ROOT / "config" / "config.yaml"
 SCHEMA_PATH = PROJECT_ROOT / "config" / "schemas.json"
 
 
-def project_path(*parts: str) -> Path:
-    return PROJECT_ROOT.joinpath(*parts)
+def project_path(path: str | Path) -> Path:
+    candidate = Path(path)
+    return candidate if candidate.is_absolute() else PROJECT_ROOT / candidate
 
 
 def load_config(path: Path | None = None) -> Dict[str, Any]:
