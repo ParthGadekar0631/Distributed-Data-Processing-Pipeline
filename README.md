@@ -1,4 +1,4 @@
-# Distributed Data Processing Pipeline
+ï»¿# Distributed Data Processing Pipeline
 
 A production-style PySpark project that simulates a ride-share company processing millions of trip records through bronze -> silver -> gold layers with validation, partitioning, retry logic, and monitoring.
 
@@ -31,15 +31,15 @@ distributed-data-processing-pipeline/
 +-- data/                 # bronze/silver/gold/quarantine/reports layers
 +-- logs/                 # Centralized pipeline logs
 +-- src/
-¦   +-- main.py           # Typer CLI entry point
-¦   +-- generator/        # Synthetic data generation
-¦   +-- ingestion/        # Raw ingestion into Spark
-¦   +-- validation/       # Business rule validators
-¦   +-- transformation/   # Feature engineering + silver writer
-¦   +-- aggregation/      # Gold layer builders
-¦   +-- monitoring/       # Metrics tracker & summaries
-¦   +-- utils/            # Logging, Spark session, retry helpers
-¦   +-- models/           # Schema builders
+Â¦   +-- main.py           # Typer CLI entry point
+Â¦   +-- generator/        # Synthetic data generation
+Â¦   +-- ingestion/        # Raw ingestion into Spark
+Â¦   +-- validation/       # Business rule validators
+Â¦   +-- transformation/   # Feature engineering + silver writer
+Â¦   +-- aggregation/      # Gold layer builders
+Â¦   +-- monitoring/       # Metrics tracker & summaries
+Â¦   +-- utils/            # Logging, Spark session, retry helpers
+Â¦   +-- models/           # Schema builders
 +-- tests/                # Pytest suites (unit + integration)
 +-- Dockerfile            # Containerized execution
 +-- docker-compose.yml    # One-command local run
@@ -68,12 +68,12 @@ distributed-data-processing-pipeline/
 - `config/schemas.json` defines the trip schema shared by ingestion and validation layers.
 
 ## Pipeline Stages
-1. **Bronze** – CSV files produced by `generate-data`, stored as `data/bronze/trips/ingestion_date=YYYY-MM-DD/part*.csv`.
-2. **Ingestion** – Spark reads bronze with fail-safe mode, logs stats, and routes corrupt rows to quarantine.
-3. **Validation** – Mandatory columns + business rules (fare = 0, distance > 0, passenger counts, chronology).
-4. **Transformation (Silver)** – Deduplication, derived metrics, normalized categorical fields, partitioned Parquet.
-5. **Gold** – Aggregated analytics tables partitioned by date/vendor/zone/hour depending on KPI.
-6. **Monitoring** – JSON metric artifacts capturing durations, row counts, and output paths for observability.
+1. **Bronze** â€“ CSV files produced by `generate-data`, stored as `data/bronze/trips/ingestion_date=YYYY-MM-DD/part*.csv`.
+2. **Ingestion** â€“ Spark reads bronze with fail-safe mode, logs stats, and routes corrupt rows to quarantine.
+3. **Validation** â€“ Mandatory columns + business rules (fare = 0, distance > 0, passenger counts, chronology).
+4. **Transformation (Silver)** â€“ Deduplication, derived metrics, normalized categorical fields, partitioned Parquet.
+5. **Gold** â€“ Aggregated analytics tables partitioned by date/vendor/zone/hour depending on KPI.
+6. **Monitoring** â€“ JSON metric artifacts capturing durations, row counts, and output paths for observability.
 
 ## Fault Tolerance & Partitioning
 - Critical steps (ingestion + gold build) include retry logic with exponential backoff.
@@ -105,6 +105,16 @@ ls data/gold/daily_vendor_revenue/ingestion_date=2024-01-01
 ls data/reports/
 python src/main.py monitoring-summary --limit 3
 ```
+
+### Windows without `make`
+`make` is not available in a vanilla PowerShell session. Either install GNU Make (via Winget/Chocolatey/Git Bash) or run the equivalent commands manually:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\pip install -r requirements.txt
+.\.venv\Scripts\python src/main.py generate-data --size small --ingestion-date 2024-01-01
+.\.venv\Scripts\python src/main.py run-pipeline --ingestion-date 2024-01-01
+```
+You can substitute other CLI commands (e.g., `validate-only`, `build-gold`) in place of `run-pipeline` as needed.
 
 ### Docker Flow
 ```bash
