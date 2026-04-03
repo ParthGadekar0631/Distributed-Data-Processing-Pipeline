@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+*.log
+
+# Spark checkpoints/temp
+temp/
+.metastore/
+
+# Data outputs (keep placeholders)
+data/bronze/*
+!data/bronze/.gitkeep
+data/silver/*
+!data/silver/.gitkeep
+data/gold/*
+!data/gold/.gitkeep
+data/quarantine/*
+!data/quarantine/.gitkeep
+data/reports/*
+!data/reports/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Spark warehouse
+spark-warehouse/
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Coverage/tests
+.coverage
+htmlcov/
+pytest_cache/

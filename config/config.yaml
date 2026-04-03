@@ -1,0 +1,75 @@
+project:
+  name: "Distributed Data Processing Pipeline"
+  description: "Distributed PySpark ETL for ride-share trips"
+
+paths:
+  bronze_root: data/bronze/trips
+  silver_root: data/silver/trips
+  gold_root: data/gold
+  quarantine_root: data/quarantine
+  reports_root: data/reports
+  logs_dir: logs
+
+spark:
+  master: "local[*]"
+  configs:
+    spark.sql.shuffle.partitions: "8"
+    spark.sql.parquet.compression.codec: "snappy"
+    spark.sql.sources.partitionOverwriteMode: "dynamic"
+    spark.sql.execution.arrow.pyspark.enabled: "true"
+
+validation:
+  passenger_count_min: 1
+  passenger_count_max: 6
+  max_trip_duration_minutes: 480
+  min_trip_distance: 0.01
+  min_fare_amount: 0.0
+
+aggregation:
+  gold_tables:
+    daily_vendor_revenue:
+      partition_columns:
+        - route_date
+    zone_distance_summary:
+      partition_columns:
+        - route_date
+    pickup_hour_trends:
+      partition_columns:
+        - route_date
+    payment_type_summary:
+      partition_columns:
+        - route_date
+
+monitoring:
+  metrics_file_prefix: pipeline_metrics
+  history_limit: 30
+
+data_generation:
+  default_timezone: "America/New_York"
+  record_size:
+    small: 5000
+    medium: 50000
+    large: 200000
+  vendors:
+    - CMT
+    - VTS
+    - DDS
+  payment_types:
+    - card
+    - cash
+    - no_charge
+    - dispute
+  pickup_zones:
+    - Midtown
+    - Downtown
+    - Uptown
+    - Queens
+    - Brooklyn
+    - Bronx
+  dropoff_zones:
+    - Midtown
+    - Downtown
+    - Uptown
+    - Queens
+    - Brooklyn
+    - Bronx
